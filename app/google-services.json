@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "142556924973",
+    "firebase_url": "https://bechde-cc951.firebaseio.com",
+    "project_id": "bechde-cc951",
+    "storage_bucket": "bechde-cc951.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142556924973:android:e5c44084b1d4f256",
+        "android_client_info": {
+          "package_name": "com.example.rakshit.bechde"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142556924973-pgi02tjk1t92s8bd1u6dlgotbl566r4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rakshit.bechde",
+            "certificate_hash": "bf3e50f95fe0eb81d74ae3fcb29a664c171640e4"
+          }
+        },
+        {
+          "client_id": "142556924973-v82ssgbio64cqdkimvv1lk3tt39c2tus.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrS-cBk-oo8f_JNYZQ_NnAyDC3cIKMrA0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142556924973-v82ssgbio64cqdkimvv1lk3tt39c2tus.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
