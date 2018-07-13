@@ -2,6 +2,7 @@ package com.example.rakshit.bechde;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,11 +11,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.example.rakshit.bechde.dummy.DummyContent;
-import com.example.rakshit.bechde.dummy.DummyContent.DummyItem;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A fragment representing a list of Items.
@@ -29,6 +40,8 @@ public class home extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    DatabaseReference databaseReference;
+    public static List<PostAd> postsList;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -59,7 +72,7 @@ public class home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_homeitem_list, container, false);
-
+        postsList = new ArrayList<>();
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -69,13 +82,36 @@ public class home extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyhomeitemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyhomeitemRecyclerViewAdapter(postsList, mListener));
         }
         MainActivity.fb.setVisibility(View.VISIBLE);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("All Posts");
+
 
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postsList.clear();
+                for (DataSnapshot posts : dataSnapshot.getChildren()) {
+                    PostAd pad = posts.getValue(PostAd.class);
+                    postsList.add(pad);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -106,6 +142,6 @@ public class home extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(PostAd item);
     }
 }

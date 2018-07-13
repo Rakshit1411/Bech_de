@@ -10,8 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.rakshit.bechde.dummy.DummyContent;
-import com.example.rakshit.bechde.dummy.DummyContent.DummyItem;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class MyHistoryFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyMyHistoryRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyMyHistoryRecyclerViewAdapter(home.postsList, mListener));
         }
         MainActivity.fb.setVisibility(View.GONE);
 
@@ -106,6 +107,6 @@ public class MyHistoryFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(PostAd item);
     }
 }

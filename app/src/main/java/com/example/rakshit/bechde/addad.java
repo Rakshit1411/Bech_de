@@ -2,8 +2,11 @@ package com.example.rakshit.bechde;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.util.Date;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -35,7 +46,9 @@ public class addad extends Fragment {
     Button discard,publish;
     EditText title,desc;
     String titleString,descString;
-    DatabaseReference databaseReference;
+    Button Addimages;
+    DatabaseReference databaseReference,databaseReference1;
+    String picturePath="p";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -82,6 +95,7 @@ public class addad extends Fragment {
         MainActivity.fb.setVisibility(View.GONE);
         discard = (Button)v.findViewById(R.id.Discard);
         publish = (Button)v.findViewById(R.id.Publish);
+        Addimages = (Button) v.findViewById(R.id.AddImages);
         discard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,18 +105,28 @@ public class addad extends Fragment {
                 ft.commit();
             }
         });
+
+
+        Toast.makeText(getActivity(),""+home.postsList.size(),Toast.LENGTH_LONG).show();
+
         title = (EditText)v.findViewById(R.id.title);
         desc = (EditText)v.findViewById(R.id.discription);
         titleString = title.getText().toString();
         descString = desc.getText().toString();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Post");
+        databaseReference1 = FirebaseDatabase.getInstance().getReference().child("All Posts");
+        databaseReference = FirebaseDatabase.getInstance().getReference(login.auth.getCurrentUser().getUid().toString()).child("Post");
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!TextUtils.isEmpty(title.getText().toString())){
+
+                    PrettyTime p = new PrettyTime();
+                    String date = p.format(new Date(System.currentTimeMillis())).toString();
+
                     String id = databaseReference.push().getKey();
-                    PostAd pad = new PostAd(id,title.getText().toString(),desc.getText().toString());
+                    PostAd pad = new PostAd(id,title.getText().toString(),desc.getText().toString(),picturePath.toString(), login.auth.getCurrentUser().getEmail().toString(),date);
                     databaseReference.child(id).setValue(pad);
+                    databaseReference1.child(id).setValue(pad);
                     Toast.makeText(getContext(),"Successfully Posted",Toast.LENGTH_LONG).show();
                     ((AppCompatActivity) getActivity()).getSupportActionBar().show();
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -112,6 +136,17 @@ public class addad extends Fragment {
                 else{
                     Toast.makeText(getContext(),"Please Enter Title",Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        Addimages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
             }
         });
 

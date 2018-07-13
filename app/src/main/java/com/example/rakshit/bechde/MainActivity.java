@@ -17,7 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.rakshit.bechde.dummy.DummyContent;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
         manager = getSupportFragmentManager();
         transaction = manager.beginTransaction();
         frag = new home();
@@ -134,7 +133,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(PostAd item) {
 
     }
 }

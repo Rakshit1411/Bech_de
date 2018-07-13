@@ -31,7 +31,7 @@ import org.w3c.dom.Text;
 public class login extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
-    private FirebaseAuth auth;
+    public static FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnLogin, btnReset;
     private TextView btnSignup,title;

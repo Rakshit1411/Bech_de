@@ -7,21 +7,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rakshit.bechde.MyHistoryFragment.OnListFragmentInteractionListener;
-import com.example.rakshit.bechde.dummy.DummyContent.DummyItem;
+
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link PostAd} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyMyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyMyHistoryRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<PostAd> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyMyHistoryRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyMyHistoryRecyclerViewAdapter(List<PostAd> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -60,7 +60,7 @@ public class MyMyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyMyHis
         public final View mView;
         //  public final TextView mIdView;
         //  public final TextView mContentView;
-        public DummyItem mItem;
+        public PostAd mItem;
 
         public ViewHolder(View view) {
             super(view);
