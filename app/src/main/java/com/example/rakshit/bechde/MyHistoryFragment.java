@@ -71,6 +71,8 @@ public class MyHistoryFragment extends Fragment {
             }
             recyclerView.setAdapter(new MyMyHistoryRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
+        MainActivity.fb.setVisibility(View.GONE);
+
         return view;
     }
 

@@ -18,19 +18,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.rakshit.bechde.dummy.DummyContent;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, home.OnListFragmentInteractionListener, MyHistoryFragment.OnListFragmentInteractionListener,Settings.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, addad.OnFragmentInteractionListener, home.OnListFragmentInteractionListener, MyHistoryFragment.OnListFragmentInteractionListener,Settings.OnFragmentInteractionListener {
     FragmentManager manager;
     FragmentTransaction transaction;
     Fragment frag;
+    public static FloatingActionButton fb;
+    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         manager = getSupportFragmentManager();
         transaction = manager.beginTransaction();
@@ -45,6 +49,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        fb = (FloatingActionButton)findViewById(R.id.addPost);
+        fb.setVisibility(View.GONE);
+        fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.frame, new addad());
+                ft.commit();
+            }
+        });
     }
 
     @Override

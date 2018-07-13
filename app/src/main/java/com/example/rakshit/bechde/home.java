@@ -2,6 +2,7 @@ package com.example.rakshit.bechde;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +29,6 @@ public class home extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -71,6 +71,8 @@ public class home extends Fragment {
             }
             recyclerView.setAdapter(new MyhomeitemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
+        MainActivity.fb.setVisibility(View.VISIBLE);
+
         return view;
     }
 

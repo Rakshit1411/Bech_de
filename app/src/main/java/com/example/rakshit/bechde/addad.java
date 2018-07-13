@@ -1,35 +1,48 @@
 package com.example.rakshit.bechde;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Settings.OnFragmentInteractionListener} interface
+ * {@link addad.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Settings#newInstance} factory method to
+ * Use the {@link addad#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Settings extends Fragment {
+public class addad extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    Button discard,publish;
+    EditText title,desc;
+    String titleString,descString;
+    DatabaseReference databaseReference;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public Settings() {
+    public addad() {
         // Required empty public constructor
     }
 
@@ -39,11 +52,11 @@ public class Settings extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Settings.
+     * @return A new instance of fragment addad.
      */
     // TODO: Rename and change types and number of parameters
-    public static Settings newInstance(String param1, String param2) {
-        Settings fragment = new Settings();
+    public static addad newInstance(String param1, String param2) {
+        addad fragment = new addad();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,8 +77,44 @@ public class Settings extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_settings, container, false);
+        final View v = inflater.inflate(R.layout.fragment_addad, container, false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         MainActivity.fb.setVisibility(View.GONE);
+        discard = (Button)v.findViewById(R.id.Discard);
+        publish = (Button)v.findViewById(R.id.Publish);
+        discard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.frame, new home());
+                ft.commit();
+            }
+        });
+        title = (EditText)v.findViewById(R.id.title);
+        desc = (EditText)v.findViewById(R.id.discription);
+        titleString = title.getText().toString();
+        descString = desc.getText().toString();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Post");
+        publish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(title.getText().toString())){
+                    String id = databaseReference.push().getKey();
+                    PostAd pad = new PostAd(id,title.getText().toString(),desc.getText().toString());
+                    databaseReference.child(id).setValue(pad);
+                    Toast.makeText(getContext(),"Successfully Posted",Toast.LENGTH_LONG).show();
+                    ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.frame, new home());
+                    ft.commit();
+                }
+                else{
+                    Toast.makeText(getContext(),"Please Enter Title",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         return v;
     }
 
